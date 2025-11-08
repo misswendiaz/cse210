@@ -16,7 +16,7 @@ class Program
 
         string choice = ShowMenu();
 
-        while (choice != "7")
+        while (true)
         {
             // 1. Add an Entry
             if (choice == "1")
@@ -40,7 +40,6 @@ class Program
 
                 // Adds the entry to the list of entries
                 journal.AddEntry(entry);
-                Console.WriteLine("\nEntry added!");
 
                 Console.WriteLine("==============================================================================================");
             }
@@ -57,7 +56,7 @@ class Program
                 DateTime dateValue;
                 while (!DateTime.TryParseExact(dateTime, "MMMM dd, yyyy - HH:mm", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dateValue))
                 {
-                    Console.WriteLine("Invalid date and time format! Please use the correct format (e.g. November 08, 2025 - 16:52).");
+                    Console.WriteLine("\nInvalid date and time format! Please use the correct format (e.g. November 08, 2025 - 16:52).");
                     dateTime = Console.ReadLine();
                 }
 
@@ -94,8 +93,8 @@ class Program
                 bool exists = journal._entries.Exists(entry => entry._date == dateTime);
                 if (exists)
                 {
-                    Console.WriteLine("\nWarning: This action cannot be undone!");
-                    Console.Write($"Are you sure you want to delete the entry from {dateTime}? (Y/N): ");
+                    Console.WriteLine("\nWarning: This action CANNOT be undone! (Deleted entries are IRRECOVERABLE.)");
+                    Console.Write($"Are you sure you want to DELETE the entry from {dateTime}? (Y/N): ");
 
                     string confirmation = Console.ReadLine();
                     string confirmationUpper = confirmation.ToUpper();
@@ -103,13 +102,23 @@ class Program
                     // Validates the confirmation response
                     while (confirmationUpper != "Y")
                     {
-                        Console.Write($"\nAre you sure you want to delete the entry from {dateTime}? (Y/N): ");
-                        confirmation = Console.ReadLine();
-                        confirmationUpper = confirmation.ToUpper();
+                        if (confirmationUpper == "N")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.Write($"\nAre you sure you want to DELETE the entry from {dateTime}? (Y/N): ");
+                            confirmation = Console.ReadLine();
+                            confirmationUpper = confirmation.ToUpper();
+                        }
                     }
-                    
-                    // Deletes the entry
-                    journal.DeleteEntry(dateTime);
+
+                    if (confirmationUpper == "Y")
+                    {
+                        // Deletes the entry
+                        journal.DeleteEntry(dateTime);
+                    }
                 }
                 else
                 {
@@ -130,7 +139,33 @@ class Program
             {
                 Console.Write("File Name: ");
                 journal._fileName = Console.ReadLine();
-                journal.SaveJournal(journal._fileName);
+
+                Console.WriteLine("\nWarning: If a file with this name already exists, it will be OVERWRITTEN.");
+                Console.Write("Do you want to proceed? (Y/N): ");
+
+                string confirmation = Console.ReadLine();
+                string confirmationUpper = confirmation.ToUpper();
+
+                // Validates the confirmation response
+                while (confirmationUpper != "Y")
+                {
+                    if (confirmationUpper == "N")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.Write($"\nAre you sure you want to SAVE this journal as {journal._fileName}? (Y/N): ");
+                        confirmation = Console.ReadLine();
+                        confirmationUpper = confirmation.ToUpper();
+                    }
+                }
+
+                if (confirmationUpper == "Y")
+                {
+                    // Saves the journal
+                    journal.SaveJournal(journal._fileName);
+                }
 
                 Console.WriteLine("==============================================================================================");
             }
@@ -141,6 +176,50 @@ class Program
                 Console.Write("File Name: ");
                 journal._fileName = Console.ReadLine();
                 journal.LoadJournal(journal._fileName);
+
+                Console.WriteLine("==============================================================================================");
+            }
+
+            // 7. Quit
+            else if (choice == "7")
+            {
+
+                Console.WriteLine("\nWarning: Exiting this program without saving will LOSE all UNSAVED CHANGES.");
+
+                string exitUpper;
+                do
+                {
+                    Console.Write("Do you want to proceed? (Y/N): ");
+                    string exit = Console.ReadLine();
+                    exitUpper = exit.ToUpper();
+
+                    if (exitUpper == "N")
+                    {
+                        Console.WriteLine("\nReturning to the main menu. . .");
+
+                        // Exits the Quit block without ending the program
+                        break;
+                    }
+                    else if (exitUpper != "Y")
+                    {
+                        Console.WriteLine("\nInvalid input! Please enter Y or N.");
+                    }
+
+                }
+                while (exitUpper != "Y");
+
+                if (exitUpper == "Y")
+                {
+                    Console.WriteLine("\nExiting program. . .");
+                    Console.WriteLine(".");
+                    Console.WriteLine(".");
+                    Console.WriteLine(".");
+                    Console.WriteLine("Goodbye! (^.^)");
+
+                    // Safely exits the program
+                    // https://www.geeksforgeeks.org/c-sharp/c-sharp-program-to-demonstrate-the-use-of-exit-method-of-environment-class/
+                    Environment.Exit(0);
+                }
 
                 Console.WriteLine("==============================================================================================");
             }
@@ -157,20 +236,6 @@ class Program
             choice = ShowMenu();
             Console.WriteLine();
         }
-
-        // 7. Quit
-        
-
-        
-        // ADDITIONAL OPTIONS
-        // - edit an entry
-        // - delete an entry
-        // - sort entries by prompt
-        // - sort entries by month
-        // - sort entries by year
-        
-
-       
     }
     
     static string ShowMenu()

@@ -21,9 +21,15 @@ public class Journal
     // behaviors (methods)
     public void AddEntry(Entry entry)
     {
+        Console.WriteLine("\nAdding entry . . .");
+        Console.WriteLine(".");
+        Console.WriteLine(".");
+        Console.WriteLine(".");
         _entries.Add(entry);
+        Console.WriteLine("Entry added!");
     }
 
+    // Edit Entry
     public void EditEntry(string dateTime)
     {
         // Finds the entry with a matching date
@@ -31,6 +37,14 @@ public class Journal
         Entry entryToEdit = _entries.Find(entry => entry._date == dateTime);
         if (entryToEdit != null)
         {
+
+            // Shows the current entry
+            Console.WriteLine($"\nCurrent Entry:");
+            Console.WriteLine(entryToEdit._date);
+            Console.WriteLine(entryToEdit._prompt);
+            Console.WriteLine(entryToEdit._response);
+            Console.WriteLine();
+
 
             Console.WriteLine($"\nEditing Entry from: {entryToEdit._date}...");
 
@@ -43,7 +57,18 @@ public class Journal
 
             entryToEdit._response = updatedResponse;
 
-            Console.WriteLine($"Entry from {entryToEdit._date} has been updated successfully!");
+            Console.WriteLine($"\nUpdating {entryToEdit._date}. . .");
+            Console.WriteLine(".");
+            Console.WriteLine(".");
+            Console.WriteLine(".");
+            Console.WriteLine($"\nEntry from {entryToEdit._date} has been updated successfully!");
+
+            // Shows the updated entry
+            Console.WriteLine($"\nCurrent Entry:");
+            Console.WriteLine(entryToEdit._date);
+            Console.WriteLine(entryToEdit._prompt);
+            Console.WriteLine(entryToEdit._response);
+            Console.WriteLine();
         }
         else
         {
@@ -59,10 +84,13 @@ public class Journal
         if (entryToDelete != null)
         {
 
-            Console.WriteLine($"\nDeleting Entry from: {entryToDelete._date}...");
+            Console.WriteLine($"\nDeleting {dateTime} entry . . .");
+            Console.WriteLine(".");
+            Console.WriteLine(".");
+            Console.WriteLine("."); 
             _entries.Remove(entryToDelete);
             Console.WriteLine();
-            Console.WriteLine($"Entry from {entryToDelete._date} has been deleted.");
+            Console.WriteLine($"{entryToDelete._date} entry has been deleted.");
         }
         else
         {
@@ -97,7 +125,10 @@ public class Journal
 
     public void SaveJournal(string fileName)
     {
-        Console.WriteLine("Saving file...");
+        Console.WriteLine($"\nSaving journal as {fileName} . . .");
+        Console.WriteLine(".");
+        Console.WriteLine(".");
+        Console.WriteLine(".");
 
         using (StreamWriter outputFile = new StreamWriter(fileName))
         {
@@ -107,12 +138,15 @@ public class Journal
             }
         }
 
-        Console.WriteLine("\nFile saved!");
+        Console.WriteLine($"\n{fileName} saved!");
     }
 
     public void LoadJournal(string fileName)
     {
-        Console.WriteLine($"Loading file [{fileName}]...");
+        Console.WriteLine($"\nLoading {fileName} . . .");
+        Console.WriteLine(".");
+        Console.WriteLine(".");
+        Console.WriteLine(".");
 
         try
         {
