@@ -10,6 +10,7 @@ public class Journal
     // attributes (member variables)
     public string _fileName;
     public List<Entry> _entries;
+    public Entry _entry;
 
     // constructor
     public Journal()
@@ -21,6 +22,52 @@ public class Journal
     public void AddEntry(Entry entry)
     {
         _entries.Add(entry);
+    }
+
+    public void EditEntry(string dateTime)
+    {
+        // Finds the entry with a matching date
+        // https://code-maze.com/csharp-update-list-item/
+        Entry entryToEdit = _entries.Find(entry => entry._date == dateTime);
+        if (entryToEdit != null)
+        {
+
+            Console.WriteLine($"\nEditing Entry from: {entryToEdit._date}...");
+
+            // Gets the prompt for the desired entry
+            Console.WriteLine($"Prompt: {entryToEdit._prompt}");
+
+            // Updates entry response
+            Console.WriteLine("Updated Response: ");
+            string updatedResponse = Console.ReadLine();
+
+            entryToEdit._response = updatedResponse;
+
+            Console.WriteLine($"Entry from {entryToEdit._date} has been updated successfully!");
+        }
+        else
+        {
+            Console.WriteLine("Entry not found!");
+        }
+    }
+
+    public void DeleteEntry(string dateTime)
+    {
+        // Finds the entry with a matching date
+        // https://code-maze.com/csharp-update-list-item/
+        Entry entryToDelete = _entries.Find(entry => entry._date == dateTime);
+        if (entryToDelete != null)
+        {
+
+            Console.WriteLine($"\nDeleting Entry from: {entryToDelete._date}...");
+            _entries.Remove(entryToDelete);
+            Console.WriteLine();
+            Console.WriteLine($"Entry from {entryToDelete._date} has been deleted.");
+        }
+        else
+        {
+            Console.WriteLine("Entry not found!");
+        }
     }
 
     public void ShowAllEntries()
