@@ -36,16 +36,13 @@ class Program
             Console.WriteLine("\nType the REFEREBCE.");
             Console.Write("Book: ");
             book = Console.ReadLine();
-            Console.WriteLine($"Book: {book}");
 
             Console.WriteLine();
             Console.Write("Chapter: ");
             chapter = int.Parse(Console.ReadLine());
-            Console.WriteLine($"Chapter: {chapter}");
 
             Console.Write("Start Verse: ");
             startVerse = int.Parse(Console.ReadLine());
-            Console.WriteLine($"Start Verse: {startVerse}");
 
             Console.Write("End Verse (if there is none, just press ENTER): ");
             string endVerseString = Console.ReadLine();
@@ -55,26 +52,36 @@ class Program
             {
                 endVerse = int.Parse(endVerseString);
             }
-            Console.WriteLine($"End Verse: {endVerse}");
 
             // Asks for the scripture passage
             Console.WriteLine("Passage:");
             passage = Console.ReadLine();
-            Console.WriteLine("Passage:");
-            Console.WriteLine(passage);
         }
 
         // Choose
         else if (choice == "2")
         {
-            Console.WriteLine("Choose the scripture passage that you want to memorize.");
+            Console.WriteLine("Choose the scripture passage you want to memorize.");
 
-            // Shows the list of scripture passages
+            // Shows a list of the scripture mastery
+            Passages passages = new Passages();
+            List<Reference> references = passages.GetAllReferences();
+            for (int i = 0; i < references.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {references[i].GetReference()}");
+            }
 
             Console.Write("\nType the NUMBER of your CHOICE. ");
-            int scriptureIndex = int.Parse(Console.ReadLine());
+            int scriptureIndex = int.Parse(Console.ReadLine()) - 1;
 
-            // Extracts the reference from the choice
+            // Extracts the scripture mastery details from the choice
+            Reference chosenReference = references[scriptureIndex];
+            passage = passages.GetPassage(chosenReference);
+            book = chosenReference.Book;
+            chapter = chosenReference.Chapter;
+            startVerse = chosenReference.StartVerse;
+            endVerse = chosenReference.EndVerse;
+
 
         }
 

@@ -28,7 +28,14 @@ public class Reference
         _verse = startVerse;
         _endVerse = endVerse;
     }
-    
+
+    // getters
+    public string Book => _book;
+    public int Chapter => _chapter;
+    public int StartVerse => _verse;
+    public int? EndVerse => _endVerse;
+
+
     // behaviors (methods)
     public string GetReference()
     // Combines the book, chapter, and verse(or verses)

@@ -157,6 +157,16 @@ public class Passages
     }
 
     // behaviors (methods)
+    public List<Reference> GetAllReferences()
+    {
+        return new List<Reference>(_passages.Key);
+    }
+
+    public string GetPassage(Reference reference)
+    {
+        return _passages[reference];
+    }
+
     public KeyValuePair<Reference, string> Pick()
     {
         var passageList = new List<KeyValuePair<Reference, string>>(_passages);
