@@ -27,7 +27,7 @@ class Program
             string passage = "";
 
             // Menu
-            string choice = "";
+            string choice = ShowMenu();
 
             while (true)
             {
@@ -229,7 +229,7 @@ class Program
                 }
                 else if (response.Trim().ToUpper() == "QUIT")
                 {
-                    Console.WriteLine("Exiting the Scripture Memorizer. . .");
+                    Console.WriteLine("\nExiting the Scripture Memorizer. . .");
                     // Counts down
                     for (int i = 3; i >= 1; i--)
                     {
@@ -242,7 +242,7 @@ class Program
                     // Thank you and Goodbye messages
                     Console.WriteLine("Thank you!");
                     Console.WriteLine("Goodbye!");
-                    break;
+                    Environment.Exit(0);
                 }
                 else
                 {
