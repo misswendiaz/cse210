@@ -283,3 +283,4 @@ class Program
     // a. Press ENTER to continue
     // b. Press BACKSPACE to unhide recently hidden words
     // c. Press ESC to quit
+// 3. Try-Catch-Error
