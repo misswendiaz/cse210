@@ -34,25 +34,7 @@ public class Scripture
     // behaviors (methods)
     public void HideWords(int hideQuantity)
     // Hides random words
-    {
-        // // Get all the words that can be hidden
-        // List<Word> hideableWords = _words.FindAll(word => !word.IsHidden() && word.ContainsLetter());
-
-        // // Adjust hideQuantity hidealableWords.Count is less than hideQuantity
-        // hideQuantity = Math.Min(hideQuantity, hideableWords.Count);
-
-        // // Hide words
-        // for (int i = 0; i < hideQuantity; i++)
-        // {
-        //     int index = _random.Next(hideableWords.Count);
-        //     hideableWords[index].Hide();
-
-        //     // Removes the indices of the hidden words
-        //     hideableWords.RemoveAt(index);
-        // }
-        
-        
-        
+    {        
         // Get the indices of visible words
         List<int> visibleIndices = new List<int>();
 
