@@ -36,8 +36,8 @@ public class Assignment
     }
     
     // behaviors (methods)
-    public void GetSummary()
+    public string GetSummary()
     {
-        Console.WriteLine($"{_studentName} - {_topic}");
+        return "{_studentName} - {_topic}";
     }
 }

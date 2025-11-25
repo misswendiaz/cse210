@@ -14,8 +14,8 @@ public class MathAssignment : Assignment
     }
 
     // behaviors (methods)
-    public void GetHomeworkList()
+    public string GetHomeworkList()
     {
-        Console.WriteLine($"{_textbookSection} {_problems}");
+        return $"Section {_textbookSection} Problems {_problems}";
     }
 }

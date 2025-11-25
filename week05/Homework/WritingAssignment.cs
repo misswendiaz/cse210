@@ -12,8 +12,8 @@ public class WritingAssignment : Assignment
     }
 
     // behaviors (methods)
-    public void GetWritingInformation()
+    public string GetWritingInformation()
     {
-        Console.WriteLine($"{_title} by {GetStudentName()}");
+        return $"{_title} by {GetStudentName()}";
     }
 }
