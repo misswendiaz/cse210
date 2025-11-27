@@ -39,7 +39,7 @@ public class ReflectingActivity : Activity
     }
 
     // behaviors (methods)
-    public void Reflect()
+    public void RunReflectingActivity()
     {
         // write the code here
     }

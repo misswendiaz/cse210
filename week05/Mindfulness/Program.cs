@@ -10,10 +10,13 @@ class Program
 
         string choice = ShowMenu();
 
+
         // Breathing Activity
         if (choice == "1")
         {
-            // write the code here
+            BreathingActivity breathingActivity = new BreathingActivity();
+            breathingActivity.RunBreathingActivity();
+
         }
 
         // Reflecting Activity
@@ -28,8 +31,20 @@ class Program
             // write the code here
         }
 
-        // Quit
+        // Grounding Activity
         else if (choice == "4")
+        {
+            // write the code here
+        }
+
+        // Deep Seeing/Listening Activity
+        else if (choice == "5")
+        {
+            // write the code here
+        }
+
+        // Quit
+        else if (choice == "6")
         {
             // write the code here
         }
@@ -48,8 +63,15 @@ class Program
 
 
         // Shows the Menu
-        Console.WriteLine
-        ("Menu Options:\n   1. Breathing Activity\n    2. Reflecting Activity\n 3. Listing Activity\n   4. Quit");
+        Console.WriteLine("Menu Options:");
+        Console.WriteLine("1. Breathing Activity");
+        Console.WriteLine("2. Reflecting Activity");
+        Console.WriteLine("3. Listing Activity");
+        Console.WriteLine("4. Grounding Activity");
+        // The 5-4-3-2-1 Grounding Technique: Bring yourself to the present moment by identifying five things you can see, four things you can feel, three things you can hear, two things you can smell, and one thing you can taste.
+        Console.WriteLine("5. Deep Seeing/Listening Activity");
+        // Deep Seeing/Listening: Pick an everyday object or a sound and focus all your attention on it for a few minutes, noticing details you might typically miss.
+        Console.WriteLine("6. Quit");
 
         Console.WriteLine();
         Console.Write("\nType the NUMBER of your CHOICE. ");

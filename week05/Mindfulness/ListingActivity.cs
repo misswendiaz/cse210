@@ -27,7 +27,7 @@ public class ListingActivity : Activity
     }
 
     // behaviors (methods)
-    public void List()
+    public void RunListingActivity()
     {
         // write the code here
     }
