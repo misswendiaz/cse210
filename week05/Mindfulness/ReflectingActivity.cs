@@ -11,6 +11,9 @@ public class ReflectingActivity : Activity
     // constructors
     public ReflectingActivity()
     {
+        _activityName = "Reflecting";
+        _activityDescription = "This activity will help you reflect on times in your life when you have shown strength and resilience.\nThis will help you recognize the power you have and how you can use it in other aspects of your life.";
+        
         // initializes the random generator
         _random = new Random();
 
@@ -41,7 +44,24 @@ public class ReflectingActivity : Activity
     // behaviors (methods)
     public void RunReflectingActivity()
     {
-        // write the code here
+        DisplayStartingMessage();
+        ShowAnimation(5);
+
+        DateTime startTime = DateTime.Now;
+        DateTime endTime = startTime.AddSeconds(_activityDuration);
+
+        while (DateTime.Now < endTime)
+        {
+            Console.Write("\nBreathe IN . . . ");
+            ShowCountdownTimer(5);
+
+            Console.Write("\nBreathe OUT . . . ");
+            ShowCountdownTimer(5);
+            Console.WriteLine();
+        }
+
+        Console.Clear();
+        DisplayEndingMessage();
     }
 
     public string PickReflectionPrompt()

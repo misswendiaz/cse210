@@ -51,7 +51,7 @@ public class Activity
         foreach (string character in animationCharacters)
         {
             Console.Write(character);
-            Thread.Sleep(300);
+            Thread.Sleep(1000 * seconds);
             Console.Write("\b \b");
         }
     }
