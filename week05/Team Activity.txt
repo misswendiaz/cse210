@@ -1,0 +1,71 @@
+===Program Overview===
+- It should have the Breathing, Reflection, and Listing activiies.
+- It should have a menu options.
+- It should have starting message and an ending message.
+
+===Necessary User Inputs===
+* Activity
+    - activity choice
+    - activity duration
+
+* Breathing Activity
+    - timing of breathing in and breathing out
+    - duration
+
+* Reflecting Activity
+    - a signal that the user has already something in his mind (like in Scripture Memorizer)
+
+* Listing Activity
+    - list of items
+
+===Classes & Their Responsibilities===
+* Activity class (Base/Parent)
+    - shows the starting message
+    - asks for the duration
+    - shows the spinner
+    - shows the ending message
+
+* BreathingActivity (Derived/Child)
+    - counts down for the breathing in and out
+
+* ReflectingActivity (Derived/Child)
+    - displays the prompt
+    - displays the follow up questions
+
+* ListingActivity (Derived/Child)
+    - displays the prompt
+    - counts the items from the user
+
+*** What is a benefit of having a base Activity class, instead of having only the three specific activity classes themselves?
+- to avoid code repetition
+
+===Class Behaviors (Methods)===
+* Activity
+    - display starting and ending messages
+    - show spinner
+    - countdown timer
+BreathingActivity
+- 
+ReflectingActivity
+- 
+ListingActivity
+- 
+
+===Class Attributes (Member Variables)===
+Activity
+_activityName : string
+_activityDescription : string
+_activityDuration : int
+
+BreathingActivity
+_breathingInterval : int
+
+ReflectingActivity
+_ random : Random
+_prompts : List<string>
+_questions : string
+
+ListingActivity
+_random : Random
+_prompts : List<string>
+_itemCount : int
