@@ -104,6 +104,7 @@ class Program
                 Environment.Exit(0);
             }
 
+            Console.Clear();
             choice = ShowMenu();
             continue;
         }
@@ -154,6 +155,7 @@ class Program
 
             else
             {
+                Console.Clear(); 
                 Console.WriteLine("Invalid input! Please type Y or N.");
             }
         }

@@ -53,8 +53,6 @@ public class DeepListeningActivity : Activity
             ShowAnimation(5);
         }
 
-        Console.Clear();
-
         // Shows the ending message
         DisplayEndingMessage();
     }

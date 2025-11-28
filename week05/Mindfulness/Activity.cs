@@ -16,6 +16,7 @@ public class Activity
     // behaviors (methods)
     public void DisplayStartingMessage()
     {
+        Console.Clear();
         Console.WriteLine($"Welcome to the {_activityName} Activity!\n");
         Console.WriteLine(_activityDescription);
         Console.Write("\nHow long (in seconds) should the session be? ");
@@ -60,6 +61,7 @@ public class Activity
 
     public void DisplayEndingMessage()
     {
+        Console.Clear(); 
         Console.WriteLine($"\nWell done!\nYou have completed {_activityDuration} seconds of the {_activityName} Activity.");
     }
 }

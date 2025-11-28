@@ -60,7 +60,8 @@ public class ListingActivity : Activity
 
         // Display item count
         _itemCount = itemList.Count();
-        Console.WriteLine($"You listed {_itemCount} items.");
+        Console.WriteLine($"\nYou listed {_itemCount} items.");
+        ShowAnimation(5);
 
         // Shows the ending message
         DisplayEndingMessage();

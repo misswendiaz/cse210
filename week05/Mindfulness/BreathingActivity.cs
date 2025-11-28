@@ -33,8 +33,6 @@ public class BreathingActivity : Activity
             Console.WriteLine();
         }
 
-        Console.Clear(); 
-
         // Shows the ending message
         DisplayEndingMessage();
     }

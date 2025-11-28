@@ -12,7 +12,7 @@ public class ReflectingActivity : Activity
     public ReflectingActivity()
     {
         _activityName = "Reflecting";
-        _activityDescription = "This activity will help you reflect on times in your life when you have shown strength and resilience.\nThis will help you recognize the power you have and how you can use it in other aspects of your life.";
+        _activityDescription = "This activity will help you reflect on times in your life when you have shown strength and resilience.\nThis will help you recognize the power you have and how you can use it in other aspects of your life.\nNOTE: This activity takes at least 20 seconds.";
         
         // initializes the random generator
         _random = new Random();
@@ -75,12 +75,10 @@ public class ReflectingActivity : Activity
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
                 DisplayFollowUpQuestion();
                 Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
-                ShowAnimation(10);
+                ShowAnimation(5);
             }
         }
 
-        Console.Clear();
-        
         // Shows the ending message
         DisplayEndingMessage();
     }
