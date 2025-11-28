@@ -11,14 +11,13 @@ class Program
         string choice = ShowMenu();
 
 
-        while(true)
+        while (true)
         {
             // Breathing Activity
             if (choice == "1")
             {
                 BreathingActivity breathingActivity = new BreathingActivity();
                 breathingActivity.RunBreathingActivity();
-
             }
 
             // Reflecting Activity
@@ -35,23 +34,25 @@ class Program
                 listingActivity.RunListingActivity();
             }
 
-            // Grounding Activity
+            // Grounding Activity - best in audio
             else if (choice == "4")
             {
                 GroundingActivity groundingActivity = new GroundingActivity();
                 groundingActivity.RunGroundingActivity();
             }
 
-            // Deep Seeing Activity
+            // Deep Seeing Activity - best in audio
             else if (choice == "5")
             {
-                // write the code here
+                DeepSeeingActivity deepSeeingActivity = new DeepSeeingActivity();
+                deepSeeingActivity.RunDeepSeeingActivity();
             }
 
-            // Deep Listening Activity
+            // Deep Listening Activity - best in audio
             else if (choice == "6")
             {
-                // write the code here
+                DeepListeningActivity deepListeningActivity = new DeepListeningActivity();
+                deepListeningActivity.RunDeepListeningActivity();
             }
 
             // Quit
@@ -74,15 +75,39 @@ class Program
             // Wrong Input
             else
             {
+                Console.Clear();
                 Console.WriteLine("\nInvalid option! Please enter a number from 1 to 7.");
 
                 Console.WriteLine("==============================================================================================");
+
+                choice = ShowMenu();
+                continue;
             }
 
-            Console.WriteLine();
+
+            // Shows the option to run the Mindfulness Program again
+            if (!Repeat())
+            {
+                Console.WriteLine("\nExiting the Mindfulness Program. . .");
+                // Counts down
+                for (int i = 3; i >= 1; i--)
+                {
+                    Console.WriteLine(".");
+                    // Pauses for 1 second = 1000 milliseconds
+                    Thread.Sleep(1000);
+                    // https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.sleep?view=net-9.0
+                }
+
+                // Thank you and Goodbye messages
+                Console.WriteLine("Thank you!");
+                Console.WriteLine("Goodbye!");
+                Environment.Exit(0);
+            }
+
             choice = ShowMenu();
-            Console.WriteLine();
+            continue;
         }
+        
     }
 
     static string ShowMenu()
@@ -97,9 +122,7 @@ class Program
         Console.WriteLine("2. Reflecting Activity");
         Console.WriteLine("3. Listing Activity");
         Console.WriteLine("4. Grounding Activity");
-        // The 5-4-3-2-1 Grounding Technique: Bring yourself to the present moment by identifying five things you can see, four things you can feel, three things you can hear, two things you can smell, and one thing you can taste.
         Console.WriteLine("5. Deep Seeing Activity");
-        // Deep Seeing/Listening: Pick an everyday object or a sound and focus all your attention on it for a few minutes, noticing details you might typically miss.
         Console.WriteLine("6. Deep Listening Activity");
         Console.WriteLine("7. Quit");
 
@@ -109,5 +132,30 @@ class Program
         // Asks for the task
         string choice = Console.ReadLine();
         return choice;
+    }
+
+    static bool Repeat()
+    {
+        while (true)
+        {
+            // Shows option to run the Mindfulness Program again
+            Console.Write("\nDo you want to try another mindfulness activity? (Y/N) ");
+            string again = Console.ReadLine().Trim().ToUpper();
+
+            if (again == "Y")
+            {
+                return true;
+            }
+
+            else if (again == "N")
+            {
+                return false;
+            }
+
+            else
+            {
+                Console.WriteLine("Invalid input! Please type Y or N.");
+            }
+        }
     }
 }
