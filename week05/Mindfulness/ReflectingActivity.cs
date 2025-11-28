@@ -44,23 +44,44 @@ public class ReflectingActivity : Activity
     // behaviors (methods)
     public void RunReflectingActivity()
     {
+        // Shows the starting message
         DisplayStartingMessage();
-        ShowAnimation(5);
+        ShowAnimation(3);
 
-        DateTime startTime = DateTime.Now;
-        DateTime endTime = startTime.AddSeconds(_activityDuration);
+        // Shows a random reflection prompt
+        PickReflectionPrompt();
+        Console.WriteLine("Consider the following prompt:\n");
+        Console.WriteLine("========================================================================================================================");
+        DisplayReflectionPrompt();
+        Console.WriteLine("========================================================================================================================");
+        Console.WriteLine("\nWhen you have something in mind, press ENTER to continue.");
 
-        while (DateTime.Now < endTime)
+        // Waits for the enter key to be pressed
+        string enterKey = Console.ReadLine();
+
+        if (string.IsNullOrEmpty(enterKey))
         {
-            Console.Write("\nBreathe IN . . . ");
-            ShowCountdownTimer(5);
+            DateTime startTime = DateTime.Now;
+            DateTime endTime = startTime.AddSeconds(_activityDuration);
 
-            Console.Write("\nBreathe OUT . . . ");
-            ShowCountdownTimer(5);
-            Console.WriteLine();
+            Console.Clear();
+
+            // Shows random follow up questions
+            Console.WriteLine("Now ponder on each of the following questions as they relate to this experience:");
+
+            while (DateTime.Now < endTime)
+            {
+                PickFollowUpQuestion();
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                DisplayFollowUpQuestion();
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+                ShowAnimation(10);
+            }
         }
 
         Console.Clear();
+        
+        // Shows the ending message
         DisplayEndingMessage();
     }
 
@@ -80,7 +101,7 @@ public class ReflectingActivity : Activity
     {
         int followUpQuestionsCount = _followUpQuestions.Count;
         int randomFollowUpQuestionIndex = _random.Next(0, followUpQuestionsCount);
-        return _reflectionPrompts[randomFollowUpQuestionIndex];
+        return _followUpQuestions[randomFollowUpQuestionIndex];
     }
 
     public void DisplayFollowUpQuestion()

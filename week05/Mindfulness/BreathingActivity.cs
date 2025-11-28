@@ -15,9 +15,11 @@ public class BreathingActivity : Activity
     // behaviors (methods)
     public void RunBreathingActivity()
     {
+        // Shows the starting message
         DisplayStartingMessage();
-        ShowAnimation(5);
+        ShowAnimation(3);
 
+        // Walk through in the breathing activity
         DateTime startTime = DateTime.Now;
         DateTime endTime = startTime.AddSeconds(_activityDuration);
 
@@ -32,6 +34,8 @@ public class BreathingActivity : Activity
         }
 
         Console.Clear(); 
+
+        // Shows the ending message
         DisplayEndingMessage();
     }
 

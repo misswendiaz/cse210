@@ -12,6 +12,9 @@ public class ListingActivity : Activity
     // constructors
     public ListingActivity()
     {
+        _activityName = "Listing";
+        _activityDescription = "This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.";
+
         // initializes the random generator
         _random = new Random();
 
@@ -29,10 +32,41 @@ public class ListingActivity : Activity
     // behaviors (methods)
     public void RunListingActivity()
     {
-        // write the code here
+        // Shows the starting message
+        DisplayStartingMessage();
+        ShowAnimation(3);
+
+        // Shows a random listing prompt
+        Console.WriteLine("List as many responses you can to the following prompt:\n");
+        Console.WriteLine("========================================================================================================================");
+        Console.WriteLine(PickListingPrompt());
+        Console.WriteLine("========================================================================================================================");
+        Console.Write("\nYou may begin in: ");
+        Console.WriteLine();
+        
+        ShowCountdownTimer(5);
+
+        List<string> itemList = GetItemList();
+
+        DateTime startTime = DateTime.Now;
+        DateTime endTime = startTime.AddSeconds(_activityDuration);
+        
+        while (DateTime.Now < endTime)
+        {
+            Console.Write("> ");
+            string item = Console.ReadLine();
+            itemList.Add(item);
+        }
+
+        // Display item count
+        _itemCount = itemList.Count();
+        Console.WriteLine($"You listed {_itemCount} items.");
+
+        // Shows the ending message
+        DisplayEndingMessage();
     }
 
-    public string PickListPrompt()
+    public string PickListingPrompt()
     {
         int listPromptsCount = _listPrompts.Count;
         int randomListPromptIndex = _random.Next(0, listPromptsCount);
@@ -42,7 +76,6 @@ public class ListingActivity : Activity
     public List<string> GetItemList()
     {
         List<string> itemList = new List<string>();
-        // write code here
         return itemList;
     }
 }

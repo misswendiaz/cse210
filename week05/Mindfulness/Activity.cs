@@ -39,20 +39,22 @@ public class Activity
     public void ShowAnimation(int seconds)
     {
         List<string> animationCharacters = new List<string>();
-        animationCharacters.Add("|");
-        animationCharacters.Add("/");
-        animationCharacters.Add("—");
-        animationCharacters.Add("\\");
-        animationCharacters.Add("|");
-        animationCharacters.Add("/");
-        animationCharacters.Add("—");
-        animationCharacters.Add("\\");
+        animationCharacters.Add("(-.-)");
+        animationCharacters.Add("(^.^)");
+        animationCharacters.Add("(^-^)");
+        animationCharacters.Add("(*-*)");
+        animationCharacters.Add("(*o*)");
+        animationCharacters.Add("(-.-)");
+        animationCharacters.Add("(^.^)");
+        animationCharacters.Add("(^-^)");
+        animationCharacters.Add("(*-*)");
+        animationCharacters.Add("(*o*)");
 
         foreach (string character in animationCharacters)
         {
             Console.Write(character);
-            Thread.Sleep(1000 * seconds);
-            Console.Write("\b \b");
+            Thread.Sleep(100 * seconds);
+            Console.Write("\b \b\b \b\b \b\b \b\b \b");
         }
     }
 
