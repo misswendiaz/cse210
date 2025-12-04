@@ -1,17 +1,16 @@
 using System;
-using System.ComponentModel;
 
 public abstract class Goal
 {
     // attributes (member variables)
-    private string _shortName;
-    private string _description;
-    private int _points;
+    protected string _name;
+    protected string _description;
+    protected int _points;
 
     // constructor
     public Goal(string name, string description, int points)
     {
-        _shortName = name;
+        _name = name;
         _description = description;
         _points = points;
     }

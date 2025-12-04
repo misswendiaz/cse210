@@ -27,14 +27,16 @@ public class ChecklistGoal : Goal
         return false; //edit code
     }
 
-    public override string GetStringRepresentation()
+    public override string GetDetailString()
     {
         // code here
         return "code";
     }
 
-    public override string GetDetailString()
+    public override string GetStringRepresentation()
     {
-        return base.GetDetailString();//edit code
+        string type = "Checklist Goal"; 
+        string stringRepresentation = $"{type} | {_name} | {_description} | {_points} | {_target} | {_bonus} | {_amountCompleted}";
+        return stringRepresentation;
     }
 }

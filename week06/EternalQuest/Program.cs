@@ -8,6 +8,8 @@ class Program
         Console.WriteLine("Hello World! This is the EternalQuest Project.");
         Console.WriteLine();
 
-        
+        GoalManager goalManager = new GoalManager();
+        goalManager.Start();
+
     }
 }
