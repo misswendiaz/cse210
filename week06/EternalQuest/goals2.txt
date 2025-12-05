@@ -1,0 +1,4 @@
+0
+Simple Goal|simple|simple goal|1|False
+Checklist Goal|checklist|list|5|5|10|0
+Eternal Goal|eternal|forever|10

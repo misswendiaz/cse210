@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 public class GoalManager
@@ -19,6 +21,7 @@ public class GoalManager
         _goals = new List<Goal>();
         _score = 0;
     }
+    
 
     // ------------------------------------------------------------------------------------------------------------------------
     // behaviors (methods)
@@ -29,9 +32,9 @@ public class GoalManager
 
         while (true)
         {
-            Console.WriteLine("\n==============================================================================================");
+            Console.WriteLine("\n========================================================================================================");
             ShowScore();
-            Console.WriteLine("==============================================================================================\n");
+            Console.WriteLine("========================================================================================================\n");
             Console.WriteLine("\nWhat would you like to do?\n");
 
 
@@ -94,59 +97,24 @@ public class GoalManager
             // Mark a Goal as "Done"
             else if (choice == "7")
             {
-                if (_goals.Count == 0)
-                {
-                    Console.WriteLine("There are no goals yet.");
-                    return;
-                }
-
-                ShowAllGoals();
-
-                Console.Write("Type the goal NUMBER that you want to mark as DONE: ");
-                int goalIndex = int.Parse(Console.ReadLine());
-
-                while (goalIndex < 1 || goalIndex > _goals.Count)
-                {
-                    WrongInput(1, _goals.Count);
-                    Console.Write("Goal Number: ");
-                    goalIndex = int.Parse(Console.ReadLine());
-                }
-                MarkAsDone(goalIndex);
+                MarkAsDone();
             }
 
             // Mark a Goal as "Not Yet Done"
             else if (choice == "8")
             {
-                if (_goals.Count == 0)
-                {
-                    Console.WriteLine("There are no goals yet.");
-                    return;
-                }
-
                 MarkAsNotYetDone();
             }
 
             // Edit a Goal
             else if (choice == "9")
             {
-                if (_goals.Count == 0)
-                {
-                    Console.WriteLine("There are no goals yet.");
-                    return;
-                }
-
                 EditAGoal();
             }
 
             // Delete a Goal
             else if (choice == "10")
             {
-                if (_goals.Count == 0)
-                {
-                    Console.WriteLine("There are no goals yet.");
-                    return;
-                }
-
                 DeleteAGoal();
             }
 
@@ -200,8 +168,21 @@ public class GoalManager
         Console.Write("\nGoal Description: ");
         string description = Console.ReadLine();
 
-        Console.Write("\nPoints: ");
-        int points = int.Parse(Console.ReadLine());
+        int points;
+        while (true)
+        {
+            Console.Write("\nPoints: ");
+            string pointsString = Console.ReadLine();
+
+            if (int.TryParse(pointsString, out points) && points > 0)
+            // https://learn.microsoft.com/en-us/dotnet/api/system.int32.tryparse?view=net-10.0
+            {
+                break;
+            }
+            Console.WriteLine("Invalid input! Please enter a valid non-negative integer.");
+        }
+
+        
 
         Goal goal = null;
 
@@ -211,11 +192,29 @@ public class GoalManager
         }
         else if (type == "2")
         {
-            Console.Write("\nHow many times does this goal need to be done to get a bonus? ");
-            int target = int.Parse(Console.ReadLine());
+            int target;
+            while (true)
+            {
+                Console.Write("\nRequired Number of Occurrence: ");
+                string targetString = Console.ReadLine();
+                if (int.TryParse(targetString, out target) && target > 0)
+                {
+                    break;
+                }
+                Console.WriteLine("Invalid input! Please enter a valid positive integer.");
+            }
 
-            Console.Write("\nCompletion Bonus Points: ");
-            int bonus = int.Parse(Console.ReadLine());
+            int bonus;
+            while (true)
+            {
+                Console.Write("\nCompletion Bonus Points: ");
+                string bonusString = Console.ReadLine();
+                if (int.TryParse(bonusString, out bonus) && bonus > 0)
+                {
+                    break;
+                }
+                Console.WriteLine("Invalid input! Please enter a valid positive integer.");
+            }
 
             goal = new ChecklistGoal(name, description, points, target, bonus);
         }
@@ -356,91 +355,220 @@ public class GoalManager
 
         else
         {
-            Console.WriteLine("\n===== GOAL LIST =====");
+            Console.WriteLine("\n============================================= GOAL LIST ================================================");
             ListGoalDetails();
-            Console.WriteLine("======================\n");
+            Console.WriteLine("========================================================================================================\n");
         }
 
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    public List<Goal> GetOngoingGoals()
+    {
+        List<Goal> ongoingGoals = new List<Goal>();
+        foreach (Goal goal in _goals)
+        {
+            if (!goal.IsComplete())
+            {
+                ongoingGoals.Add(goal);
+            }
+        }
+        return ongoingGoals;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
 
     public void ShowAllOngoingGoals()
     {
-        for (int i = 0; i < _goals.Count; i++)
+        List<Goal> ongoingGoals = GetOngoingGoals();
+        
+        if (ongoingGoals.Count == 0)
         {
-            if (!_goals[i].IsComplete())
+            Console.WriteLine("No ongoing goals yet.");
+        }
+        else
+        {
+            Console.WriteLine("\n========================================= ONGOING GOAL LIST ============================================");
+            for (int i = 0; i < ongoingGoals.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {_goals[i].GetDetailsString()}");
+                Console.WriteLine($"{i + 1}. {ongoingGoals[i].GetDetailsString()}");
+            }
+            Console.WriteLine("========================================================================================================\n");
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    public List<Goal> GetCompletedGoals()
+    {
+        List<Goal> completedGoals = new List<Goal>();
+        foreach (Goal goal in _goals)
+        {
+            if (goal.IsComplete())
+            {
+                completedGoals.Add(goal);
             }
         }
+        return completedGoals;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
 
     public void ShowAllCompletedGoals()
     {
-        for (int i = 0; i < _goals.Count; i++)
+        List<Goal> completedGoals = GetCompletedGoals();
+
+        if (completedGoals.Count == 0)
         {
-            if (_goals[i].IsComplete())
+            Console.WriteLine("No completed goals yet.");
+        }
+        else
+        {
+            Console.WriteLine("\n======================================== COMPLETED GOAL LIST ============================================");
+            for (int i = 0; i < completedGoals.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {_goals[i].GetDetailsString()}");
+                Console.WriteLine($"{i + 1}. {completedGoals[i].GetDetailsString()}");
             }
+            Console.WriteLine("========================================================================================================\n");
         }
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
 
-    public void MarkAsDone(int goalIndex)
+    public void MarkAsDone()
     {
-        Goal goal = _goals[goalIndex - 1];
+        ShowAllOngoingGoals();
+        List<Goal> ongoingGoals = GetOngoingGoals();
 
-        int basePoints = goal.GetPoints();
-        int bonusPoints = 0;
-
-        goal.RecordEvent();
-
-        if (goal is ChecklistGoal checklistGoal)
+        if (ongoingGoals.Count == 0)
         {
-            if (checklistGoal.IsComplete())
-            {
-                bonusPoints = checklistGoal.GetBonus();
-            }
+            return;
         }
 
-        _score += basePoints + bonusPoints;
+        else
+        {
+            int goalNumber;
+            while (true)
+            {
+                Console.Write("Type the goal NUMBER that you want to mark as DONE: ");
+                string goalNumberString = Console.ReadLine();
+                if (int.TryParse(goalNumberString, out goalNumber) && goalNumber > 0)
+                {
+                    while (goalNumber < 1 || goalNumber > ongoingGoals.Count)
+                    {
+                        WrongInput(1, ongoingGoals.Count);
+                        Console.Write("Goal Number: ");
+                        goalNumber = int.Parse(Console.ReadLine());
+                    }
 
-        Console.WriteLine($"Score: {_score}");
+                    int index = goalNumber - 1;
+
+                    Goal goal =ongoingGoals[index];
+
+                    int basePoints = goal.GetPoints();
+                    int bonusPoints = 0;
+
+                    goal.RecordEvent();
+
+                    if (goal is ChecklistGoal checklistGoal)
+                    {
+                        if (checklistGoal.IsComplete())
+                        {
+                            bonusPoints = checklistGoal.GetBonus();
+                        }
+                    }
+
+                    _score += basePoints + bonusPoints;
+
+                    ShowAllGoals();
+                    break;
+                }
+                
+                WrongInput(1, ongoingGoals.Count);
+            }
+
+            
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
 
     public void MarkAsNotYetDone()
     {
-        ShowAllGoals();
-        Console.Write("\nWhich goal do you need to mark as NOT YET DONE? ");
-        int goalNumber = int.Parse(Console.ReadLine());
+        ShowAllCompletedGoals();
+        List<Goal> completedGoals = GetCompletedGoals();
 
-        Goal selectedGoal = _goals[goalNumber - 1];
-
-        if (selectedGoal is EternalGoal)
+        if (completedGoals.Count == 0)
         {
-            Console.WriteLine("Eternal goals cannot be marked complete or incomplete.");
             return;
         }
 
-        else if (selectedGoal is SimpleGoal simpleGoal)
+        else
         {
-            simpleGoal.SetIsCompleted(false);
-            Console.WriteLine($"\n{selectedGoal.GetName()} marked as NOT DONE");
-        }
-        else if (selectedGoal is ChecklistGoal checklistGoal)
-        {
-            checklistGoal.SetAmountCompleted(0);
-            Console.WriteLine($"\n{selectedGoal.GetName()} marked as NOT DONE");
-        }
+            int goalNumber;
+            while (true)
+            {
+                Console.Write("\nWhich goal do you need to mark as NOT YET DONE? ");
+                string goalNumberString = Console.ReadLine();
+                if (int.TryParse(goalNumberString, out goalNumber) && goalNumber > 0)
+                {
+                    while (goalNumber < 1 || goalNumber > completedGoals.Count)
+                    {
+                        WrongInput(1, completedGoals.Count);
+                        Console.Write("Goal Number: ");
+                        goalNumber = int.Parse(Console.ReadLine());
+                    }
 
-        // Adjust Score
+                    int index = goalNumber - 1;
+
+                    Goal selectedGoal = completedGoals[index];
+
+                    if (selectedGoal is EternalGoal)
+                    {
+                        Console.WriteLine("Eternal goals cannot be marked complete or incomplete.");
+                        return;
+                    }
+
+                    else if (selectedGoal is SimpleGoal simpleGoal)
+                    {
+                        simpleGoal.SetIsCompleted(false);
+                        Console.WriteLine($"\n{selectedGoal.GetName()} marked as NOT DONE");
+
+                        // Adjust score
+                        _score = _score - simpleGoal.GetPoints();
+                    }
+                    else if (selectedGoal is ChecklistGoal checklistGoal)
+                    {
+                        int currentAmountCompleted = checklistGoal.GetAmountCompleted();
+
+                        Console.Write("Number of Completed Instances: ");
+                        int amountCompleted = int.Parse(Console.ReadLine());
+
+                        // Adjust score
+                        int amountDifference = currentAmountCompleted - amountCompleted;
+
+                        if (checklistGoal.IsComplete())
+                        {
+                            int pointDeduction = amountDifference * checklistGoal.GetPoints();
+                            int bonusDeduction = checklistGoal.GetBonus();
+                            _score = _score - (pointDeduction + bonusDeduction);
+                        }
+                        else
+                        {
+                            int pointDeduction = amountDifference * checklistGoal.GetPoints();
+                            _score = _score - pointDeduction;
+                        }
+
+                        checklistGoal.SetAmountCompleted(amountCompleted);
+                        Console.WriteLine($"\n{selectedGoal.GetName()} marked as NOT DONE");
+                    }
+
+                    ShowAllGoals();
+                    break;
+                }
+
+                WrongInput(1, completedGoals.Count);
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
@@ -449,147 +577,177 @@ public class GoalManager
     {
         ShowAllGoals();
 
-        // Asks for the specific goal to edit using the goal number
-        Console.WriteLine("Type the goal number that you would like to EDIT. ");
-
-        int goalNumber = int.Parse(Console.ReadLine());
-
-        while (goalNumber < 1 || goalNumber > _goals.Count)
+        if (_goals.Count == 0)
         {
-            WrongInput(1, _goals.Count);
-            Console.Write("Goal Number: ");
-            goalNumber = int.Parse(Console.ReadLine());
+            return;
         }
-
-        int index = goalNumber - 1;
-        Goal selectedGoal = _goals[index];
-
-        Console.WriteLine("\n Which Goal Attribute would you like to edit?");
-        Console.WriteLine("1. Goal Name");
-        Console.WriteLine("2. Goal Description");
-        Console.WriteLine("3. Points Earned Per Completion");
-        Console.WriteLine("4. Goal Completion Status");
-
-        if (selectedGoal is ChecklistGoal)
-        {
-            Console.WriteLine("5. Goal Frequency Target");
-            Console.WriteLine("6. Goal Completion Count");
-            Console.WriteLine("7. Goal Completion Bonus");
-        }
-
-        Console.Write("Goal Attribute: ");
-        int attribute = int.Parse(Console.ReadLine());
-
-        if (attribute == 1)
-        {
-            Console.Write("\nGoal Name: ");
-            string name = Console.ReadLine();
-            _goals[index].SetName(name);
-        }
-
-        else if (attribute == 2)
-        {
-            Console.Write("\nGoal Description: ");
-            string description = Console.ReadLine();
-            _goals[index].SetDescription(description);
-        }
-
-        else if (attribute == 3)
-        {
-            Console.Write("\nPoints: ");
-            int points = int.Parse(Console.ReadLine());
-            _goals[index].SetPoints(points);
-        }
-
-        else if (attribute == 4)
-        {
-            if (selectedGoal is EternalGoal)
-            {
-                Console.WriteLine("Eternal goals cannot be marked complete.");
-                return;
-            }
-
-            Console.WriteLine("\nMark this goal as");
-            Console.WriteLine("1. Done");
-            Console.WriteLine("2. Not Yet Done");
-            Console.Write("\nMark: ");
-
-            int mark = int.Parse(Console.ReadLine());
-
-            if (mark == 1)
-            {
-                if (selectedGoal is SimpleGoal simpleGoal)
-                {
-                    simpleGoal.SetIsCompleted(true);
-                }
-
-                else if (selectedGoal is ChecklistGoal checklistGoal)
-                {
-                    Console.Write("Number of Completed Instances: ");
-                    int amountCompleted = int.Parse(Console.ReadLine());
-                    checklistGoal.SetAmountCompleted(amountCompleted);
-                }
-
-                // Adjust Score
-            }
-            else if (mark == 2)
-            {
-                if (selectedGoal is SimpleGoal simpleGoal)
-                {
-                    simpleGoal.SetIsCompleted(false);
-                }
-
-                else if (selectedGoal is ChecklistGoal checklistGoal)
-                {
-                    Console.Write("Number of Completed Instances: ");
-                    int amountCompleted = int.Parse(Console.ReadLine());
-                    checklistGoal.SetAmountCompleted(amountCompleted);
-                }
-
-                // Adjust Score
-            }
-            else
-            {
-                WrongInput(1, 2);
-            }
-        }
-
-        else if (selectedGoal is ChecklistGoal checklistGoal && attribute >= 5 && attribute <= 7)
-        {
-            if (attribute == 5)
-            {
-                Console.Write("\nHow many times does this goal need to be done to get a bonus? ");
-                int target = int.Parse(Console.ReadLine());
-                checklistGoal.SetTarget(target);
-            }
-
-            else if (attribute == 6)
-            {
-                Console.Write("\nHow many instances of this goal have you completed? ");
-                int amountCompleted = int.Parse(Console.ReadLine());
-                checklistGoal.SetAmountCompleted(amountCompleted);
-
-                // Adjust Score
-            }
-
-            else if (attribute == 7)
-            {
-                Console.Write("\nCompletion Bonus Points: ");
-                int bonus = int.Parse(Console.ReadLine());
-                checklistGoal.SetBonus(bonus);
-            }
-        }
-
 
         else
         {
-            WrongInput(1, 7);
+            // Asks for the specific goal to edit using the goal number
+            Console.Write("Type the goal number that you would like to EDIT. ");
+
+            int goalNumber = int.Parse(Console.ReadLine());
+
+            while (goalNumber < 1 || goalNumber > _goals.Count)
+            {
+                WrongInput(1, _goals.Count);
+                Console.Write("Goal Number: ");
+                goalNumber = int.Parse(Console.ReadLine());
+            }
+
+            int index = goalNumber - 1;
+            Goal selectedGoal = _goals[index];
+
+            {
+                Console.WriteLine("\n Which Goal Attribute would you like to edit?");
+                Console.WriteLine("1. Goal Name");
+                Console.WriteLine("2. Goal Description");
+                Console.WriteLine("3. Points Earned Per Completion");
+
+                int maxAttributeCount = 3;
+
+                if (selectedGoal is ChecklistGoal)
+                {
+                    Console.WriteLine("4. Goal Required Number of Occurrence");
+                    Console.WriteLine("5. Goal Completion Count");
+                    Console.WriteLine("6. Goal Completion Bonus");
+                    maxAttributeCount = 6;
+                }
+
+                int attribute;
+                while (true)
+                {
+                    Console.Write("\n Goal Attribute: ");
+                    string attributeString = Console.ReadLine();
+                    if (int.TryParse(attributeString, out attribute) && attribute > 0 && attribute <= maxAttributeCount)
+                    {
+                        if (attribute == 1)
+                        {
+                            Console.Write("\nNew Goal Name: ");
+                            string name = Console.ReadLine();
+                            _goals[index].SetName(name);
+                        }
+
+                        else if (attribute == 2)
+                        {
+                            Console.Write("\nNew Goal Description: ");
+                            string description = Console.ReadLine();
+                            _goals[index].SetDescription(description);
+                        }
+
+                        else if (attribute == 3)
+                        {
+                            int points;
+                            while (true)
+                            {
+                                Console.Write("\nNew Point Reward: ");
+                                string pointsString = Console.ReadLine();
+                                if (int.TryParse(pointsString, out points) && points > 0)
+                                {
+                                    _goals[index].SetPoints(points);
+                                    break;
+                                }
+                                Console.WriteLine("Invalid input! Please enter a positive integer.");
+                            }
+                            
+                        }
+
+                        else if (selectedGoal is ChecklistGoal checklistGoal && attribute >= 4 && attribute <= 6)
+                        {
+                            if (attribute == 4)
+                            {
+                                int target;
+                                while (true)
+                                {
+                                    Console.Write("\nNew Required Number of Occurrence: ");
+                                    string targetString = Console.ReadLine();
+                                    if (int.TryParse(targetString, out target) && target > 0)
+                                    {
+                                        checklistGoal.SetTarget(target);
+
+                                        if (checklistGoal.IsComplete())
+                                        {
+                                            _score = _score + checklistGoal.GetBonus();
+                                        }
+                                        break;
+                                    }
+                                    Console.WriteLine("Invalid input! Please enter a positive integer.");
+
+                                }
+                                
+                            }
+
+                            else if (attribute == 5)
+                            {
+                                int updatedCompletedCount;
+                                while (true)
+                                {
+                                    Console.Write("\nNew Completion Count: ");
+                                    string updatedCompletedCountString = Console.ReadLine();
+                                    if (int.TryParse(updatedCompletedCountString, out updatedCompletedCount) && updatedCompletedCount >= 0)
+                                    {
+                                        // Adjust Score
+                                        int currentCompletedCount = checklistGoal.GetAmountCompleted();
+                                        int countDifference = Math.Abs(currentCompletedCount - updatedCompletedCount);
+                                        int pointsDifference = countDifference * checklistGoal.GetPoints();
+                                        int bonus = checklistGoal.GetBonus();
+
+                                        if (currentCompletedCount < updatedCompletedCount)
+                                        {
+                                            checklistGoal.SetAmountCompleted(updatedCompletedCount);
+                                            if (checklistGoal.IsComplete())
+                                            {
+                                                _score = _score + pointsDifference + bonus;
+                                            }
+                                            else
+                                            {
+                                                _score = _score + pointsDifference;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (checklistGoal.IsComplete())
+                                            {
+                                                _score = _score - (pointsDifference + bonus);
+                                            }
+                                            else
+                                            {
+                                                _score = _score - pointsDifference;
+                                            }
+                                            checklistGoal.SetAmountCompleted(updatedCompletedCount);
+                                        }
+                                        break;
+                                    }
+                                    Console.WriteLine("Invalid input! Please enter a non-negative integer.");
+                                }
+                            }
+
+                            else if (attribute == 6)
+                            {
+                                int bonus;
+                                while (true)
+                                {
+                                    Console.Write("\nNew Completion Bonus Points: ");
+                                    string bonusString = Console.ReadLine();
+                                    if (int.TryParse(bonusString, out bonus) && bonus > 0)
+                                    {
+                                        checklistGoal.SetBonus(bonus);
+                                        break;
+                                    }
+                                    Console.WriteLine("Invalid input! Please enter a positive integer.");
+                                }
+                            }
+                        }
+                        Console.WriteLine($"\nGoal {_goals[index].GetName()} edited successfully!");
+
+                        ShowAllGoals();
+                        break;
+                    }
+                    WrongInput(1, maxAttributeCount);
+                }
+            }
         }
-
-
-        Console.WriteLine($"\nGoal {_goals[index].GetName()} edited successfully!");
-
-
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
@@ -598,29 +756,50 @@ public class GoalManager
     {
         ShowAllGoals();
 
-        Console.Write("\nWhich goal do you want to DELETE? ");
-        int goalNumber = int.Parse(Console.ReadLine());
-
-        while (goalNumber < 1 || goalNumber > _goals.Count)
+        if (_goals.Count == 0)
         {
-            WrongInput(1, _goals.Count);
-            Console.Write("\nGoal Number: ");
-            goalNumber = int.Parse(Console.ReadLine());
+            return;
         }
 
-        int index = goalNumber - 1;
-
-        Console.Write($"Are you sure you want to delete \"{_goals[index].GetName()}\"? (Y/N): ");
-        string delete = Console.ReadLine().ToUpper();
-
-        if (delete == "Y")
-        {
-            _goals.RemoveAt(index);
-            Console.WriteLine("\nGoal deleted successfully.");
-        }
         else
         {
-            Console.WriteLine("\nDeletion canceled.");
+            int goalNumber;
+            while (true)
+            {
+                Console.Write("\nGoal Number: ");
+                string goalNumberString = Console.ReadLine();
+                if (int.TryParse(goalNumberString, out goalNumber) && goalNumber > 0 && goalNumber <= _goals.Count)
+                {
+                    int index = goalNumber - 1;
+
+                    Console.Write($"\nAre you sure you want to delete \"{_goals[index].GetName()}\"? (Y/N): ");
+                    string delete = Console.ReadLine().ToUpper();
+
+                    while (delete != "Y")
+                    {
+                        if (delete == "N")
+                        {
+                            Console.WriteLine("\nDeletion canceled."); 
+                            break;
+                        }
+                        else
+                        {
+                            Console.Write("\nInvalid input! Please enter Y or N. ");
+                            delete = Console.ReadLine().ToUpper();
+                        }
+                    }
+
+                    if (delete == "Y")
+                    {
+                        _goals.RemoveAt(index);
+                        Console.WriteLine("\nGoal deleted successfully.");
+                    }
+
+                    ShowAllGoals();
+                    break;
+                }
+                WrongInput(1, _goals.Count);
+            }
         }
     }
 
@@ -633,7 +812,7 @@ public class GoalManager
         string exitUpper;
         do
         {
-            Console.Write("Do you want to proceed? (Y/N): ");
+            Console.Write("\nDo you want to proceed? (Y/N): ");
             string exit = Console.ReadLine();
             exitUpper = exit.ToUpper();
 
@@ -664,7 +843,7 @@ public class GoalManager
             Environment.Exit(0);
         }
 
-        Console.WriteLine("==============================================================================================");
+        Console.WriteLine("========================================================================================================");
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
@@ -673,7 +852,7 @@ public class GoalManager
     {
         Console.WriteLine($"\nInvalid option! Please enter a number from {start} to {end}.");
 
-        Console.WriteLine("==============================================================================================");
+        Console.WriteLine("========================================================================================================");
 
         List<string> animationCharacters = new List<string>();
         animationCharacters.Add("(-.-)");

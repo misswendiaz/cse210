@@ -35,6 +35,12 @@ public class ChecklistGoal : Goal
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
+    public int GetAmountCompleted()
+    {
+        return _amountCompleted;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
     // setters
     // ------------------------------------------------------------------------------------------------------------------------
     public void SetAmountCompleted(int amountCompleted)
@@ -66,7 +72,7 @@ public class ChecklistGoal : Goal
 
         if (_amountCompleted == _target)
         {
-            Console.WriteLine($"Congratulations! You've completed the checklist goal! {_bonus} points earned!");
+            Console.WriteLine($"Congratulations! You've completed the checklist goal! Additional {_bonus} bonus points earned!");
         }
     }
 

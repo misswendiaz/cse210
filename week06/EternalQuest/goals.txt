@@ -3,3 +3,4 @@ Simple Goal|eternal quest|complete eternal quest assignment|100|False
 Simple Goal|explain polymorphism|complete polymorphism homework|10|False
 Checklist Goal|long exam 4|check Math 21 LE4|50|3|100|0
 Eternal Goal|work out|exercise daily|100
+Simple Goal|test|testing|5|False
