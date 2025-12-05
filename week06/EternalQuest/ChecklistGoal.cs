@@ -27,26 +27,62 @@ public class ChecklistGoal : Goal
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
+    // getters
+    // ------------------------------------------------------------------------------------------------------------------------
+    public int GetBonus()
+    {
+        return _bonus;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    // setters
+    // ------------------------------------------------------------------------------------------------------------------------
+    public void SetAmountCompleted(int amountCompleted)
+    {
+        _amountCompleted = amountCompleted;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+
+    public void SetTarget(int target)
+    {
+        _target = target;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+
+    public void SetBonus(int bonus)
+    {
+        _bonus = bonus;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
     // behaviors (methods)
     // ------------------------------------------------------------------------------------------------------------------------
     public override void RecordEvent()
     {
-        // code here
+        _amountCompleted++;
+        Console.WriteLine($"Progress recorded! ({_amountCompleted}/{_target})");
+
+        if (_amountCompleted == _target)
+        {
+            Console.WriteLine($"Congratulations! You've completed the checklist goal! {_bonus} points earned!");
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
 
     public override bool IsComplete()
     {
-        // code here
-        return false; //edit code
+        return _amountCompleted == _target;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
 
     public override string GetDetailsString()
     {
-        return $"[ ] {GetName()}: {GetDescription()} - {GetPoints()} points (Completed: {_amountCompleted}/{_target}) | Completion Bonus: {_bonus}";
+        string checkmark = IsComplete() ? "[x]" : "[ ]";
+        return $"{checkmark} {GetName()}: {GetDescription()} - {GetPoints()} points (Completed: {_amountCompleted}/{_target}) | Completion Bonus: {_bonus}";
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +90,7 @@ public class ChecklistGoal : Goal
     public override string GetStringRepresentation()
     {
         string type = "Checklist Goal"; 
-        string stringRepresentation = $"{type} | {GetName()} | {GetDescription()} | {GetPoints()} | {_target} | {_bonus} | {_amountCompleted}";
+        string stringRepresentation = $"{type}|{GetName()}|{GetDescription()}|{GetPoints()}|{_target}|{_bonus}|{_amountCompleted}";
         return stringRepresentation;
     }
 }

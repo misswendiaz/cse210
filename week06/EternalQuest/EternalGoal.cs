@@ -19,7 +19,7 @@ public class EternalGoal : Goal
     // ------------------------------------------------------------------------------------------------------------------------
     public override void RecordEvent()
     {
-        // code here
+        Console.WriteLine($"Event recorded! You earned {GetPoints()} points!");
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class EternalGoal : Goal
     public override string GetStringRepresentation()
     {
         string type = "Eternal Goal";
-        string stringRepresentation = $"{type} | {GetName()} | {GetDescription()} | {GetPoints()}";
+        string stringRepresentation = $"{type}|{GetName()}|{GetDescription()}|{GetPoints()}";
         return stringRepresentation;
     }
 }
