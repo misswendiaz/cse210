@@ -2,12 +2,16 @@ using System;
 
 public abstract class Goal
 {
+    // ------------------------------------------------------------------------------------------------------------------------
     // attributes (member variables)
-    protected string _name;
-    protected string _description;
-    protected int _points;
+    // ------------------------------------------------------------------------------------------------------------------------
+    private string _name;
+    private string _description;
+    private int _points;
 
+    // ------------------------------------------------------------------------------------------------------------------------
     // constructor
+    // ------------------------------------------------------------------------------------------------------------------------
     public Goal(string name, string description, int points)
     {
         _name = name;
@@ -15,13 +19,40 @@ public abstract class Goal
         _points = points;
     }
 
-    // behaviors (methods)
-    public abstract void RecordEvent();
-    public abstract bool IsComplete();
-    public virtual string GetDetailString()
+    // ------------------------------------------------------------------------------------------------------------------------
+    // getters
+    // ------------------------------------------------------------------------------------------------------------------------
+    public string GetName()
     {
-        // code here
-        return "string";
+        return _name;
     }
+
+    public string GetDescription()
+    {
+        return _description;
+    }
+
+    public int GetPoints()
+    {
+        return _points;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    // behaviors (methods)
+    // ------------------------------------------------------------------------------------------------------------------------
+    public abstract void RecordEvent();
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    public abstract bool IsComplete();
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    public virtual string GetDetailsString()
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    {
+        return $"[ ] {GetName()}: {GetDescription()} - {GetPoints()} points";
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
     public abstract string GetStringRepresentation();
 }
