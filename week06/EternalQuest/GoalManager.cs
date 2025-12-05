@@ -171,7 +171,7 @@ public class GoalManager
         int points;
         while (true)
         {
-            Console.Write("\nPoints: ");
+            Console.Write("\nPoints Earned per Occurence: ");
             string pointsString = Console.ReadLine();
 
             if (int.TryParse(pointsString, out points) && points > 0)
@@ -207,7 +207,7 @@ public class GoalManager
             int bonus;
             while (true)
             {
-                Console.Write("\nCompletion Bonus Points: ");
+                Console.Write("\nCompletion Bonus: ");
                 string bonusString = Console.ReadLine();
                 if (int.TryParse(bonusString, out bonus) && bonus > 0)
                 {
@@ -601,17 +601,17 @@ public class GoalManager
 
             {
                 Console.WriteLine("\n Which Goal Attribute would you like to edit?");
-                Console.WriteLine("1. Goal Name");
-                Console.WriteLine("2. Goal Description");
-                Console.WriteLine("3. Points Earned Per Completion");
+                Console.WriteLine("1. Name");
+                Console.WriteLine("2. Description");
+                Console.WriteLine("3. Points Earned Per Occurence");
 
                 int maxAttributeCount = 3;
 
                 if (selectedGoal is ChecklistGoal)
                 {
-                    Console.WriteLine("4. Goal Required Number of Occurrence");
-                    Console.WriteLine("5. Goal Completion Count");
-                    Console.WriteLine("6. Goal Completion Bonus");
+                    Console.WriteLine("4. Required Number of Occurrences");
+                    Console.WriteLine("5. Number of Completed Occurrences");
+                    Console.WriteLine("6. Completion Bonus");
                     maxAttributeCount = 6;
                 }
 
@@ -641,7 +641,7 @@ public class GoalManager
                             int points;
                             while (true)
                             {
-                                Console.Write("\nNew Point Reward: ");
+                                Console.Write("\nNew Points Earned per Occurrence: ");
                                 string pointsString = Console.ReadLine();
                                 if (int.TryParse(pointsString, out points) && points > 0)
                                 {
@@ -683,7 +683,7 @@ public class GoalManager
                                 int updatedCompletedCount;
                                 while (true)
                                 {
-                                    Console.Write("\nNew Completion Count: ");
+                                    Console.Write("\nNew Number of Completed Occurrences: ");
                                     string updatedCompletedCountString = Console.ReadLine();
                                     if (int.TryParse(updatedCompletedCountString, out updatedCompletedCount) && updatedCompletedCount >= 0)
                                     {
@@ -728,7 +728,7 @@ public class GoalManager
                                 int bonus;
                                 while (true)
                                 {
-                                    Console.Write("\nNew Completion Bonus Points: ");
+                                    Console.Write("\nNew Completion Bonus: ");
                                     string bonusString = Console.ReadLine();
                                     if (int.TryParse(bonusString, out bonus) && bonus > 0)
                                     {
